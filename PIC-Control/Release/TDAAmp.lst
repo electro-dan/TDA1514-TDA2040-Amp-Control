@@ -1,0 +1,693 @@
+;/////////////////////////////////////////////////////////////////////////////////
+;// Code Generator: BoostC Compiler - http://www.sourceboost.com
+;// Version       : 8.01
+;// License Type  : Pro License
+;// Limitations   : PIC12,PIC16 max code size:Unlimited, max RAM banks:Unlimited
+;/////////////////////////////////////////////////////////////////////////////////
+
+	ORG 0x00000000
+0000  295A  	GOTO	_startup
+	ORG 0x00000004
+0004  00FF  	MOVWF Int1Context
+0005  0E03  	SWAPF STATUS, W
+0006  1283  	BCF STATUS, RP0
+0007  1303  	BCF STATUS, RP1
+0008  00A0  	MOVWF Int1BContext
+0009  0E0A  	SWAPF PCLATH, W
+000A  00A1  	MOVWF Int1BContext+D'1'
+000B  0E04  	SWAPF FSR, W
+000C  00A2  	MOVWF Int1BContext+D'2'
+000D  118A  	BCF PCLATH,3
+000E  120A  	BCF PCLATH,4
+000F  296D  	GOTO	interrupt
+	ORG 0x00000010
+0010        delay_ms_00000
+0010        ; { delay_ms ; function begin
+0010  08B8  	MOVF delay_ms_00000_arg_del, F
+0011  1D03  	BTFSS STATUS,Z
+0012  2814  	GOTO	label1
+0013  0008  	RETURN
+0014        label1
+0014  30F9  	MOVLW 0xF9
+0015        label2
+0015  3EFF  	ADDLW 0xFF
+0016  1D03  	BTFSS STATUS,Z
+0017  2815  	GOTO	label2
+0018  0000  	NOP
+0019  0BB8  	DECFSZ delay_ms_00000_arg_del, F
+001A  2814  	GOTO	label1
+001B  0008  	RETURN
+001C        ; } delay_ms function end
+
+	ORG 0x0000001C
+001C        delay_s_00000
+001C        ; { delay_s ; function begin
+001C        label3
+001C  30FA  	MOVLW 0xFA
+001D  00B8  	MOVWF delay_ms_00000_arg_del
+001E  2010  	CALL delay_ms_00000
+001F  30FA  	MOVLW 0xFA
+0020  00B8  	MOVWF delay_ms_00000_arg_del
+0021  2010  	CALL delay_ms_00000
+0022  30FA  	MOVLW 0xFA
+0023  00B8  	MOVWF delay_ms_00000_arg_del
+0024  2010  	CALL delay_ms_00000
+0025  30FA  	MOVLW 0xFA
+0026  00B8  	MOVWF delay_ms_00000_arg_del
+0027  2010  	CALL delay_ms_00000
+0028  0BB7  	DECFSZ delay_s_00000_arg_del, F
+0029  281C  	GOTO	label3
+002A  0008  	RETURN
+002B        ; } delay_s function end
+
+	ORG 0x0000002B
+002B        applyInput_00000
+002B        ; { applyInput ; function begin
+002B  1283  	BCF STATUS, RP0
+002C  1303  	BCF STATUS, RP1
+002D  0826  	MOVF gbl_iActiveInput, W
+002E  3A00  	XORLW 0x00
+002F  1903  	BTFSC STATUS,Z
+0030  2838  	GOTO	label4
+0031  3A01  	XORLW 0x01
+0032  1903  	BTFSC STATUS,Z
+0033  283C  	GOTO	label5
+0034  3A03  	XORLW 0x03
+0035  1903  	BTFSC STATUS,Z
+0036  2840  	GOTO	label6
+0037  0008  	RETURN
+0038        label4
+0038  1705  	BSF gbl_porta,6
+0039  1286  	BCF gbl_portb,5
+003A  1206  	BCF gbl_portb,4
+003B  0008  	RETURN
+003C        label5
+003C  1305  	BCF gbl_porta,6
+003D  1686  	BSF gbl_portb,5
+003E  1206  	BCF gbl_portb,4
+003F  0008  	RETURN
+0040        label6
+0040  1305  	BCF gbl_porta,6
+0041  1286  	BCF gbl_portb,5
+0042  1606  	BSF gbl_portb,4
+0043  0008  	RETURN
+0044        ; } applyInput function end
+
+	ORG 0x00000044
+0044        doPower_00000
+0044        ; { doPower ; function begin
+0044  1283  	BCF STATUS, RP0
+0045  1303  	BCF STATUS, RP1
+0046  08A7  	MOVF gbl_iPower, F
+0047  1903  	BTFSC STATUS,Z
+0048  2856  	GOTO	label7
+0049  1005  	BCF gbl_porta,0
+004A  01A7  	CLRF gbl_iPower
+004B  3001  	MOVLW 0x01
+004C  00B7  	MOVWF delay_s_00000_arg_del
+004D  201C  	CALL delay_s_00000
+004E  1085  	BCF gbl_porta,1
+004F  1305  	BCF gbl_porta,6
+0050  1286  	BCF gbl_portb,5
+0051  1206  	BCF gbl_portb,4
+0052  3006  	MOVLW 0x06
+0053  00B7  	MOVWF delay_s_00000_arg_del
+0054  201C  	CALL delay_s_00000
+0055  0008  	RETURN
+0056        label7
+0056  202B  	CALL applyInput_00000
+0057  302C  	MOVLW 0x2C
+0058  00B8  	MOVWF delay_ms_00000_arg_del
+0059  2010  	CALL delay_ms_00000
+005A  1485  	BSF gbl_porta,1
+005B  3002  	MOVLW 0x02
+005C  00B7  	MOVWF delay_s_00000_arg_del
+005D  201C  	CALL delay_s_00000
+005E  3001  	MOVLW 0x01
+005F  00A7  	MOVWF gbl_iPower
+0060  1405  	BSF gbl_porta,0
+0061  0008  	RETURN
+0062        ; } doPower function end
+
+	ORG 0x00000062
+0062        doMute_00000
+0062        ; { doMute ; function begin
+0062  1283  	BCF STATUS, RP0
+0063  1303  	BCF STATUS, RP1
+0064  1835  	BTFSC gbl_iMute,0
+0065  1405  	BSF gbl_porta,0
+0066  1C35  	BTFSS gbl_iMute,0
+0067  1005  	BCF gbl_porta,0
+0068  0AB5  	INCF gbl_iMute, F
+0069  0008  	RETURN
+006A        ; } doMute function end
+
+	ORG 0x0000006A
+006A        doMotorUp_00000
+006A        ; { doMotorUp ; function begin
+006A  1283  	BCF STATUS, RP0
+006B  1303  	BCF STATUS, RP1
+006C  1185  	BCF gbl_porta,3
+006D  1605  	BSF gbl_porta,4
+006E  01B6  	CLRF gbl_iTmr0Counter
+006F  303C  	MOVLW 0x3C
+0070  0081  	MOVWF gbl_tmr0
+0071  0008  	RETURN
+0072        ; } doMotorUp function end
+
+	ORG 0x00000072
+0072        doMotorDow_00014
+0072        ; { doMotorDown ; function begin
+0072  1283  	BCF STATUS, RP0
+0073  1303  	BCF STATUS, RP1
+0074  1205  	BCF gbl_porta,4
+0075  1585  	BSF gbl_porta,3
+0076  01B6  	CLRF gbl_iTmr0Counter
+0077  303C  	MOVLW 0x3C
+0078  0081  	MOVWF gbl_tmr0
+0079  0008  	RETURN
+007A        ; } doMotorDown function end
+
+	ORG 0x0000007A
+007A        doInputUp_00000
+007A        ; { doInputUp ; function begin
+007A  1283  	BCF STATUS, RP0
+007B  1303  	BCF STATUS, RP1
+007C  0AA6  	INCF gbl_iActiveInput, F
+007D  3003  	MOVLW 0x03
+007E  0226  	SUBWF gbl_iActiveInput, W
+007F  1803  	BTFSC STATUS,C
+0080  01A6  	CLRF gbl_iActiveInput
+0081  202B  	CALL applyInput_00000
+0082  0008  	RETURN
+0083        ; } doInputUp function end
+
+	ORG 0x00000083
+0083        doInputDow_00013
+0083        ; { doInputDown ; function begin
+0083  1283  	BCF STATUS, RP0
+0084  1303  	BCF STATUS, RP1
+0085  03A6  	DECF gbl_iActiveInput, F
+0086  0826  	MOVF gbl_iActiveInput, W
+0087  3C03  	SUBLW 0x03
+0088  1803  	BTFSC STATUS,C
+0089  288C  	GOTO	label8
+008A  3002  	MOVLW 0x02
+008B  00A6  	MOVWF gbl_iActiveInput
+008C        label8
+008C  202B  	CALL applyInput_00000
+008D  0008  	RETURN
+008E        ; } doInputDown function end
+
+	ORG 0x0000008E
+008E        rc5Process_00000
+008E        ; { rc5Process ; function begin
+008E  1283  	BCF STATUS, RP0
+008F  1303  	BCF STATUS, RP1
+0090  1106  	BCF gbl_portb,2
+0091  08B2  	MOVF gbl_rc5_address, F
+0092  1D03  	BTFSS STATUS,Z
+0093  0008  	RETURN
+0094  08A7  	MOVF gbl_iPower, F
+0095  1903  	BTFSC STATUS,Z
+0096  28BA  	GOTO	label14
+0097  0833  	MOVF gbl_rc5_command, W
+0098  3A0D  	XORLW 0x0D
+0099  1903  	BTFSC STATUS,Z
+009A  28A8  	GOTO	label9
+009B  3A1D  	XORLW 0x1D
+009C  1903  	BTFSC STATUS,Z
+009D  28AD  	GOTO	label10
+009E  3A01  	XORLW 0x01
+009F  1903  	BTFSC STATUS,Z
+00A0  28AF  	GOTO	label11
+00A1  3A31  	XORLW 0x31
+00A2  1903  	BTFSC STATUS,Z
+00A3  28B1  	GOTO	label12
+00A4  3A01  	XORLW 0x01
+00A5  1903  	BTFSC STATUS,Z
+00A6  28B6  	GOTO	label13
+00A7  28BA  	GOTO	label14
+00A8        label9
+00A8  0830  	MOVF gbl_rc5_flickBit, W
+00A9  0631  	XORWF gbl_rc5_flickBitOld, W
+00AA  1D03  	BTFSS STATUS,Z
+00AB  2062  	CALL doMute_00000
+00AC  28BA  	GOTO	label14
+00AD        label10
+00AD  206A  	CALL doMotorUp_00000
+00AE  28BA  	GOTO	label14
+00AF        label11
+00AF  2072  	CALL doMotorDow_00014
+00B0  28BA  	GOTO	label14
+00B1        label12
+00B1  0830  	MOVF gbl_rc5_flickBit, W
+00B2  0631  	XORWF gbl_rc5_flickBitOld, W
+00B3  1D03  	BTFSS STATUS,Z
+00B4  207A  	CALL doInputUp_00000
+00B5  28BA  	GOTO	label14
+00B6        label13
+00B6  0830  	MOVF gbl_rc5_flickBit, W
+00B7  0631  	XORWF gbl_rc5_flickBitOld, W
+00B8  1D03  	BTFSS STATUS,Z
+00B9  2083  	CALL doInputDow_00013
+00BA        label14
+00BA  0833  	MOVF gbl_rc5_command, W
+00BB  3A0C  	XORLW 0x0C
+00BC  1D03  	BTFSS STATUS,Z
+00BD  0008  	RETURN
+00BE  0830  	MOVF gbl_rc5_flickBit, W
+00BF  0631  	XORWF gbl_rc5_flickBitOld, W
+00C0  1D03  	BTFSS STATUS,Z
+00C1  2044  	CALL doPower_00000
+00C2  0008  	RETURN
+00C3        ; } rc5Process function end
+
+	ORG 0x000000C3
+00C3        initialise_00000
+00C3        ; { initialise ; function begin
+00C3  1683  	BSF STATUS, RP0
+00C4  1303  	BCF STATUS, RP1
+00C5  158E  	BSF gbl_pcon,3
+00C6  3020  	MOVLW 0x20
+00C7  0085  	MOVWF gbl_trisa
+00C8  1283  	BCF STATUS, RP0
+00C9  0185  	CLRF gbl_porta
+00CA  30C3  	MOVLW 0xC3
+00CB  1683  	BSF STATUS, RP0
+00CC  0086  	MOVWF gbl_trisb
+00CD  1283  	BCF STATUS, RP0
+00CE  0186  	CLRF gbl_portb
+00CF  1683  	BSF STATUS, RP0
+00D0  0181  	CLRF gbl_option_reg
+00D1  1381  	BCF gbl_option_reg,7
+00D2  3007  	MOVLW 0x07
+00D3  1283  	BCF STATUS, RP0
+00D4  009F  	MOVWF gbl_cmcon
+00D5  1683  	BSF STATUS, RP0
+00D6  1301  	BCF gbl_option_reg,6
+00D7  108B  	BCF gbl_intcon,1
+00D8  160B  	BSF gbl_intcon,4
+00D9  1281  	BCF gbl_option_reg,5
+00DA  1201  	BCF gbl_option_reg,4
+00DB  1181  	BCF gbl_option_reg,3
+00DC  1501  	BSF gbl_option_reg,2
+00DD  1481  	BSF gbl_option_reg,1
+00DE  1401  	BSF gbl_option_reg,0
+00DF  303C  	MOVLW 0x3C
+00E0  1283  	BCF STATUS, RP0
+00E1  0081  	MOVWF gbl_tmr0
+00E2  110B  	BCF gbl_intcon,2
+00E3  168B  	BSF gbl_intcon,5
+00E4  3038  	MOVLW 0x38
+00E5  0092  	MOVWF gbl_t2con
+00E6  306E  	MOVLW 0x6E
+00E7  1683  	BSF STATUS, RP0
+00E8  0092  	MOVWF gbl_pr2
+00E9  1283  	BCF STATUS, RP0
+00EA  108C  	BCF gbl_pir1,1
+00EB  1683  	BSF STATUS, RP0
+00EC  148C  	BSF gbl_pie1,1
+00ED  100B  	BCF gbl_intcon,0
+00EE  158B  	BSF gbl_intcon,3
+00EF  30C0  	MOVLW 0xC0
+00F0  1283  	BCF STATUS, RP0
+00F1  0506  	ANDWF gbl_portb, W
+00F2  00A9  	MOVWF gbl_cPortBPrevious
+00F3  01B4  	CLRF gbl_cTask
+00F4  3001  	MOVLW 0x01
+00F5  00B7  	MOVWF delay_s_00000_arg_del
+00F6  201C  	CALL delay_s_00000
+00F7  0186  	CLRF gbl_portb
+00F8  178B  	BSF gbl_intcon,7
+00F9  170B  	BSF gbl_intcon,6
+00FA  0008  	RETURN
+00FB        ; } initialise function end
+
+	ORG 0x000000FB
+00FB        checkPower_00015
+00FB        ; { checkPowerSw ; function begin
+00FB  1283  	BCF STATUS, RP0
+00FC  1303  	BCF STATUS, RP1
+00FD  1886  	BTFSC gbl_portb,1
+00FE  0008  	RETURN
+00FF  30BC  	MOVLW 0xBC
+0100  00B8  	MOVWF delay_ms_00000_arg_del
+0101  2010  	CALL delay_ms_00000
+0102  1C86  	BTFSS gbl_portb,1
+0103  2044  	CALL doPower_00000
+0104  0008  	RETURN
+0105        ; } checkPowerSw function end
+
+	ORG 0x00000105
+0105        checkEncod_00016
+0105        ; { checkEncoders ; function begin
+0105  1283  	BCF STATUS, RP0
+0106  1303  	BCF STATUS, RP1
+0107  0829  	MOVF gbl_cPortBPrevious, W
+0108  0628  	XORWF gbl_cPortBCurrent, W
+0109  1903  	BTFSC STATUS,Z
+010A  0008  	RETURN
+010B  08A7  	MOVF gbl_iPower, F
+010C  1903  	BTFSC STATUS,Z
+010D  2945  	GOTO	label23
+010E  0829  	MOVF gbl_cPortBPrevious, W
+010F  3A00  	XORLW 0x00
+0110  1903  	BTFSC STATUS,Z
+0111  291C  	GOTO	label15
+0112  3A40  	XORLW 0x40
+0113  1903  	BTFSC STATUS,Z
+0114  2927  	GOTO	label17
+0115  3A80  	XORLW 0x80
+0116  1903  	BTFSC STATUS,Z
+0117  2931  	GOTO	label19
+0118  3A40  	XORLW 0x40
+0119  1903  	BTFSC STATUS,Z
+011A  293C  	GOTO	label21
+011B  2945  	GOTO	label23
+011C        label15
+011C  0828  	MOVF gbl_cPortBCurrent, W
+011D  3A40  	XORLW 0x40
+011E  1D03  	BTFSS STATUS,Z
+011F  2922  	GOTO	label16
+0120  207A  	CALL doInputUp_00000
+0121  2945  	GOTO	label23
+0122        label16
+0122  0828  	MOVF gbl_cPortBCurrent, W
+0123  3A80  	XORLW 0x80
+0124  1903  	BTFSC STATUS,Z
+0125  2083  	CALL doInputDow_00013
+0126  2945  	GOTO	label23
+0127        label17
+0127  0828  	MOVF gbl_cPortBCurrent, W
+0128  3AC0  	XORLW 0xC0
+0129  1D03  	BTFSS STATUS,Z
+012A  292D  	GOTO	label18
+012B  207A  	CALL doInputUp_00000
+012C  2945  	GOTO	label23
+012D        label18
+012D  08A8  	MOVF gbl_cPortBCurrent, F
+012E  1903  	BTFSC STATUS,Z
+012F  2083  	CALL doInputDow_00013
+0130  2945  	GOTO	label23
+0131        label19
+0131  0828  	MOVF gbl_cPortBCurrent, W
+0132  3A80  	XORLW 0x80
+0133  1D03  	BTFSS STATUS,Z
+0134  2937  	GOTO	label20
+0135  207A  	CALL doInputUp_00000
+0136  2945  	GOTO	label23
+0137        label20
+0137  0828  	MOVF gbl_cPortBCurrent, W
+0138  3A40  	XORLW 0x40
+0139  1903  	BTFSC STATUS,Z
+013A  2083  	CALL doInputDow_00013
+013B  2945  	GOTO	label23
+013C        label21
+013C  08A8  	MOVF gbl_cPortBCurrent, F
+013D  1D03  	BTFSS STATUS,Z
+013E  2941  	GOTO	label22
+013F  207A  	CALL doInputUp_00000
+0140  2945  	GOTO	label23
+0141        label22
+0141  0828  	MOVF gbl_cPortBCurrent, W
+0142  3AC0  	XORLW 0xC0
+0143  1903  	BTFSC STATUS,Z
+0144  2083  	CALL doInputDow_00013
+0145        label23
+0145  0828  	MOVF gbl_cPortBCurrent, W
+0146  00A9  	MOVWF gbl_cPortBPrevious
+0147  0008  	RETURN
+0148        ; } checkEncoders function end
+
+	ORG 0x00000148
+0148        main
+0148        ; { main ; function begin
+0148  20C3  	CALL initialise_00000
+0149        label24
+0149  0834  	MOVF gbl_cTask, W
+014A  3C00  	SUBLW 0x00
+014B  1803  	BTFSC STATUS,C
+014C  2958  	GOTO	label26
+014D  1C34  	BTFSS gbl_cTask,0
+014E  2953  	GOTO	label25
+014F  208E  	CALL rc5Process_00000
+0150  1106  	BCF gbl_portb,2
+0151  1034  	BCF gbl_cTask,0
+0152  2949  	GOTO	label24
+0153        label25
+0153  1E34  	BTFSS gbl_cTask,4
+0154  2949  	GOTO	label24
+0155  2105  	CALL checkEncod_00016
+0156  1234  	BCF gbl_cTask,4
+0157  2949  	GOTO	label24
+0158        label26
+0158  20FB  	CALL checkPower_00015
+0159  2949  	GOTO	label24
+015A        ; } main function end
+
+	ORG 0x0000015A
+015A        _startup
+015A  3001  	MOVLW 0x01
+015B  1283  	BCF STATUS, RP0
+015C  1303  	BCF STATUS, RP1
+015D  00A5  	MOVWF gbl_SW_PWROLD
+015E  01A7  	CLRF gbl_iPower
+015F  01A6  	CLRF gbl_iActiveInput
+0160  01AD  	CLRF gbl_rc5_currentState
+0161  3001  	MOVLW 0x01
+0162  00AE  	MOVWF gbl_rc5_pinState
+0163  01AF  	CLRF gbl_rc5_intfCounter
+0164  01B0  	CLRF gbl_rc5_flickBit
+0165  01B1  	CLRF gbl_rc5_flickBitOld
+0166  01B2  	CLRF gbl_rc5_address
+0167  01B3  	CLRF gbl_rc5_command
+0168  01B5  	CLRF gbl_iMute
+0169  01B6  	CLRF gbl_iTmr0Counter
+016A  118A  	BCF PCLATH,3
+016B  120A  	BCF PCLATH,4
+016C  2948  	GOTO	main
+	ORG 0x0000016D
+016D        interrupt
+016D        ; { interrupt ; function begin
+016D  1C8B  	BTFSS gbl_intcon,1
+016E  298C  	GOTO	label31
+016F  1283  	BCF STATUS, RP0
+0170  1303  	BCF STATUS, RP1
+0171  1C2F  	BTFSS gbl_rc5_intfCounter,0
+0172  2975  	GOTO	label28
+0173  1683  	BSF STATUS, RP0
+0174  1701  	BSF gbl_option_reg,6
+0175        label28
+0175  1283  	BCF STATUS, RP0
+0176  182F  	BTFSC gbl_rc5_intfCounter,0
+0177  297A  	GOTO	label29
+0178  1683  	BSF STATUS, RP0
+0179  1301  	BCF gbl_option_reg,6
+017A        label29
+017A  1283  	BCF STATUS, RP0
+017B  0AAF  	INCF gbl_rc5_intfCounter, F
+017C  0AAC  	INCF gbl_rc5_logicChange, F
+017D  08AD  	MOVF gbl_rc5_currentState, F
+017E  1D03  	BTFSS STATUS,Z
+017F  298B  	GOTO	label30
+0180  01AB  	CLRF gbl_rc5_logicInterval
+0181  01AC  	CLRF gbl_rc5_logicChange
+0182  0191  	CLRF gbl_tmr2
+0183  301A  	MOVLW 0x1A
+0184  1683  	BSF STATUS, RP0
+0185  0092  	MOVWF gbl_pr2
+0186  1283  	BCF STATUS, RP0
+0187  108C  	BCF gbl_pir1,1
+0188  1512  	BSF gbl_t2con,2
+0189  3001  	MOVLW 0x01
+018A  00AD  	MOVWF gbl_rc5_currentState
+018B        label30
+018B  108B  	BCF gbl_intcon,1
+018C        label31
+018C  1283  	BCF STATUS, RP0
+018D  1303  	BCF STATUS, RP1
+018E  1C8C  	BTFSS gbl_pir1,1
+018F  2A10  	GOTO	label49
+0190  01AE  	CLRF gbl_rc5_pinState
+0191  1C06  	BTFSS gbl_portb,0
+0192  2994  	GOTO	label32
+0193  0AAE  	INCF gbl_rc5_pinState, F
+0194        label32
+0194  032D  	DECF gbl_rc5_currentState, W
+0195  1903  	BTFSC STATUS,Z
+0196  299C  	GOTO	label33
+0197  0AAB  	INCF gbl_rc5_logicInterval, F
+0198  182B  	BTFSC gbl_rc5_logicInterval,0
+0199  1506  	BSF gbl_portb,2
+019A  1C2B  	BTFSS gbl_rc5_logicInterval,0
+019B  1106  	BCF gbl_portb,2
+019C        label33
+019C  01B9  	CLRF interrupt_15_iReset
+019D  082D  	MOVF gbl_rc5_currentState, W
+019E  3A01  	XORLW 0x01
+019F  1903  	BTFSC STATUS,Z
+01A0  29A8  	GOTO	label34
+01A1  3A03  	XORLW 0x03
+01A2  1903  	BTFSC STATUS,Z
+01A3  29B0  	GOTO	label35
+01A4  3A01  	XORLW 0x01
+01A5  1903  	BTFSC STATUS,Z
+01A6  29C1  	GOTO	label37
+01A7  2A04  	GOTO	label46
+01A8        label34
+01A8  0191  	CLRF gbl_tmr2
+01A9  306E  	MOVLW 0x6E
+01AA  1683  	BSF STATUS, RP0
+01AB  0092  	MOVWF gbl_pr2
+01AC  3002  	MOVLW 0x02
+01AD  1283  	BCF STATUS, RP0
+01AE  00AD  	MOVWF gbl_rc5_currentState
+01AF  2A06  	GOTO	label47
+01B0        label35
+01B0  032B  	DECF gbl_rc5_logicInterval, W
+01B1  1D03  	BTFSS STATUS,Z
+01B2  29BE  	GOTO	label36
+01B3  032C  	DECF gbl_rc5_logicChange, W
+01B4  1D03  	BTFSS STATUS,Z
+01B5  29BE  	GOTO	label36
+01B6  01AB  	CLRF gbl_rc5_logicInterval
+01B7  01AC  	CLRF gbl_rc5_logicChange
+01B8  01AA  	CLRF gbl_rc5_bitCount
+01B9  01A3  	CLRF gbl_rc5_inputData
+01BA  01A4  	CLRF gbl_rc5_inputData+D'1'
+01BB  3003  	MOVLW 0x03
+01BC  00AD  	MOVWF gbl_rc5_currentState
+01BD  2A06  	GOTO	label47
+01BE        label36
+01BE  3001  	MOVLW 0x01
+01BF  00B9  	MOVWF interrupt_15_iReset
+01C0  2A06  	GOTO	label47
+01C1        label37
+01C1  082B  	MOVF gbl_rc5_logicInterval, W
+01C2  3A02  	XORLW 0x02
+01C3  1D03  	BTFSS STATUS,Z
+01C4  2A06  	GOTO	label47
+01C5  082C  	MOVF gbl_rc5_logicChange, W
+01C6  3C02  	SUBLW 0x02
+01C7  1C03  	BTFSS STATUS,C
+01C8  2A01  	GOTO	label45
+01C9  01AB  	CLRF gbl_rc5_logicInterval
+01CA  01AC  	CLRF gbl_rc5_logicChange
+01CB  300C  	MOVLW 0x0C
+01CC  022A  	SUBWF gbl_rc5_bitCount, W
+01CD  1803  	BTFSC STATUS,C
+01CE  29D7  	GOTO	label38
+01CF  0AAA  	INCF gbl_rc5_bitCount, F
+01D0  1003  	BCF STATUS,C
+01D1  0DA3  	RLF gbl_rc5_inputData, F
+01D2  0DA4  	RLF gbl_rc5_inputData+D'1', F
+01D3  032E  	DECF gbl_rc5_pinState, W
+01D4  1903  	BTFSC STATUS,Z
+01D5  1423  	BSF gbl_rc5_inputData,0
+01D6  2A06  	GOTO	label47
+01D7        label38
+01D7  303F  	MOVLW 0x3F
+01D8  0523  	ANDWF gbl_rc5_inputData, W
+01D9  00B3  	MOVWF gbl_rc5_command
+01DA  3006  	MOVLW 0x06
+01DB  00BA  	MOVWF CompTempVar551
+01DC  08BA  	MOVF CompTempVar551, F
+01DD        label39
+01DD  1903  	BTFSC STATUS,Z
+01DE  29E4  	GOTO	label40
+01DF  1003  	BCF STATUS,C
+01E0  0CA4  	RRF gbl_rc5_inputData+D'1', F
+01E1  0CA3  	RRF gbl_rc5_inputData, F
+01E2  03BA  	DECF CompTempVar551, F
+01E3  29DD  	GOTO	label39
+01E4        label40
+01E4  301F  	MOVLW 0x1F
+01E5  0523  	ANDWF gbl_rc5_inputData, W
+01E6  00B2  	MOVWF gbl_rc5_address
+01E7  3005  	MOVLW 0x05
+01E8  00BA  	MOVWF CompTempVar552
+01E9  08BA  	MOVF CompTempVar552, F
+01EA        label41
+01EA  1903  	BTFSC STATUS,Z
+01EB  29F1  	GOTO	label42
+01EC  1003  	BCF STATUS,C
+01ED  0CA4  	RRF gbl_rc5_inputData+D'1', F
+01EE  0CA3  	RRF gbl_rc5_inputData, F
+01EF  03BA  	DECF CompTempVar552, F
+01F0  29EA  	GOTO	label41
+01F1        label42
+01F1  0831  	MOVF gbl_rc5_flickBitOld, W
+01F2  0623  	XORWF gbl_rc5_inputData, W
+01F3  1903  	BTFSC STATUS,Z
+01F4  0824  	MOVF gbl_rc5_inputData+D'1', W
+01F5  1903  	BTFSC STATUS,Z
+01F6  29FC  	GOTO	label43
+01F7  3001  	MOVLW 0x01
+01F8  00B0  	MOVWF gbl_rc5_flickBit
+01F9  0823  	MOVF gbl_rc5_inputData, W
+01FA  00B1  	MOVWF gbl_rc5_flickBitOld
+01FB  29FD  	GOTO	label44
+01FC        label43
+01FC  01B0  	CLRF gbl_rc5_flickBit
+01FD        label44
+01FD  1434  	BSF gbl_cTask,0
+01FE  3001  	MOVLW 0x01
+01FF  00B9  	MOVWF interrupt_15_iReset
+0200  2A06  	GOTO	label47
+0201        label45
+0201  3001  	MOVLW 0x01
+0202  00B9  	MOVWF interrupt_15_iReset
+0203  2A06  	GOTO	label47
+0204        label46
+0204  3001  	MOVLW 0x01
+0205  00B9  	MOVWF interrupt_15_iReset
+0206        label47
+0206  08B9  	MOVF interrupt_15_iReset, F
+0207  1903  	BTFSC STATUS,Z
+0208  2A0F  	GOTO	label48
+0209  01AD  	CLRF gbl_rc5_currentState
+020A  1112  	BCF gbl_t2con,2
+020B  1683  	BSF STATUS, RP0
+020C  1301  	BCF gbl_option_reg,6
+020D  1283  	BCF STATUS, RP0
+020E  1106  	BCF gbl_portb,2
+020F        label48
+020F  108C  	BCF gbl_pir1,1
+0210        label49
+0210  1C0B  	BTFSS gbl_intcon,0
+0211  2A17  	GOTO	label50
+0212  30C0  	MOVLW 0xC0
+0213  0506  	ANDWF gbl_portb, W
+0214  00A8  	MOVWF gbl_cPortBCurrent
+0215  1634  	BSF gbl_cTask,4
+0216  100B  	BCF gbl_intcon,0
+0217        label50
+0217  1D0B  	BTFSS gbl_intcon,2
+0218  2A24  	GOTO	label52
+0219  0836  	MOVF gbl_iTmr0Counter, W
+021A  3C02  	SUBLW 0x02
+021B  1803  	BTFSC STATUS,C
+021C  2A20  	GOTO	label51
+021D  1205  	BCF gbl_porta,4
+021E  1185  	BCF gbl_porta,3
+021F  01B6  	CLRF gbl_iTmr0Counter
+0220        label51
+0220  0AB6  	INCF gbl_iTmr0Counter, F
+0221  303C  	MOVLW 0x3C
+0222  0081  	MOVWF gbl_tmr0
+0223  110B  	BCF gbl_intcon,2
+0224        label52
+0224  0E22  	SWAPF Int1BContext+D'2', W
+0225  0084  	MOVWF FSR
+0226  0E21  	SWAPF Int1BContext+D'1', W
+0227  008A  	MOVWF PCLATH
+0228  0E20  	SWAPF Int1BContext, W
+0229  0083  	MOVWF STATUS
+022A  0EFF  	SWAPF Int1Context, F
+022B  0E7F  	SWAPF Int1Context, W
+022C  0009  	RETFIE
+022D        ; } interrupt function end
+
+	ORG 0x00002007
+2007  3F18  	DW 0x3F18

@@ -1,0 +1,107 @@
+;/////////////////////////////////////////////////////////////////////////////////
+;// Code Generator: BoostC Compiler - http://www.sourceboost.com
+;// Version       : 8.01
+;// License Type  : Pro License
+;// Limitations   : PIC12,PIC16 max code size:Unlimited, max RAM banks:Unlimited
+;/////////////////////////////////////////////////////////////////////////////////
+
+
+Map File
+
+Program Memory usage
+====================
+
+Address  Length   Unique Name      Name
+-------  ------   -----------      ----
+00000000:00000004 _resetvector     _resetvector  
+00000004:0000000C _interruptVector _interruptVector  
+00000010:0000000C delay_ms_00000   delay_ms(unsigned char)  
+0000001C:0000000F delay_s_00000    delay_s(unsigned char)  
+0000002B:00000019 applyInput_00000 applyInput(void)  
+00000044:0000001E doPower_00000    doPower(void)  
+00000062:00000008 doMute_00000     doMute(void)  
+0000006A:00000008 doMotorUp_00000  doMotorUp(void)  
+00000072:00000008 doMotorDow_00014 doMotorDown(void)  
+0000007A:00000009 doInputUp_00000  doInputUp(void)  
+00000083:0000000B doInputDow_00013 doInputDown(void)  
+0000008E:00000035 rc5Process_00000 rc5Process(void)  
+000000C3:00000038 initialise_00000 initialise(void)  
+000000FB:0000000A checkPower_00015 checkPowerSw(void)  
+00000105:00000043 checkEncod_00016 checkEncoders(void)  
+00000148:00000012 main             main(void)  
+0000015A:00000013 _startup_00000   _startup(void)  
+0000016D:000000C0 interrupt        interrupt(void)  
+0000022D:000001D3 *Unused Block 
+
+Register usage
+==============
+
+Address  Bit Lengh Bit Mask   Unique Name                      Name
+-------  --------- --------   -----------                      ----
+00000000:00000008             gbl_indf                         indf
+00000001:00000008             gbl_tmr0                         tmr0
+00000002:00000008             gbl_pcl                          pcl
+00000003:00000008             gbl_status                       status
+00000004:00000008             gbl_fsr                          fsr
+00000005:00000008             gbl_porta                        porta
+00000006:00000008             gbl_portb                        portb
+0000000A:00000008             gbl_pclath                       pclath
+0000000B:00000008             gbl_intcon                       intcon
+0000000C:00000008             gbl_pir1                         pir1
+0000000E:00000008             gbl_tmr1l                        tmr1l
+0000000F:00000008             gbl_tmr1h                        tmr1h
+00000010:00000008             gbl_t1con                        t1con
+00000011:00000008             gbl_tmr2                         tmr2
+00000012:00000008             gbl_t2con                        t2con
+00000015:00000008             gbl_ccpr1l                       ccpr1l
+00000016:00000008             gbl_ccpr1h                       ccpr1h
+00000017:00000008             gbl_ccp1con                      ccp1con
+00000018:00000008             gbl_rcsta                        rcsta
+00000019:00000008             gbl_txreg                        txreg
+0000001A:00000008             gbl_rcreg                        rcreg
+0000001F:00000008             gbl_cmcon                        cmcon
+00000020:00000018             Int1BContext                     Int1BContext
+00000023:00000010             gbl_rc5_inputData                rc5_inputData
+00000025:00000008             gbl_SW_PWROLD                    SW_PWROLD
+00000026:00000008             gbl_iActiveInput                 iActiveInput
+00000027:00000008             gbl_iPower                       iPower
+00000028:00000008             gbl_cPortBCurrent                cPortBCurrent
+00000029:00000008             gbl_cPortBPrevious               cPortBPrevious
+0000002A:00000008             gbl_rc5_bitCount                 rc5_bitCount
+0000002B:00000008             gbl_rc5_logicInterval            rc5_logicInterval
+0000002C:00000008             gbl_rc5_logicChange              rc5_logicChange
+0000002D:00000008             gbl_rc5_currentState             rc5_currentState
+0000002E:00000008             gbl_rc5_pinState                 rc5_pinState
+0000002F:00000008             gbl_rc5_intfCounter              rc5_intfCounter
+00000030:00000008             gbl_rc5_flickBit                 rc5_flickBit
+00000031:00000008             gbl_rc5_flickBitOld              rc5_flickBitOld
+00000032:00000008             gbl_rc5_address                  rc5_address
+00000033:00000008             gbl_rc5_command                  rc5_command
+00000034:00000008             gbl_cTask                        cTask
+00000035:00000008             gbl_iMute                        iMute
+00000036:00000008             gbl_iTmr0Counter                 iTmr0Counter
+00000037:00000008             delay_s_00000_arg_del            del
+00000038:00000008             delay_ms_00000_arg_del           del
+00000039:00000008             interrupt_15_iReset              iReset
+0000003A:00000008             CompTempVar552                  
+0000007F:00000008             Int1Context                      Int1Context
+00000081:00000008             gbl_option_reg                   option_reg
+00000085:00000008             gbl_trisa                        trisa
+00000086:00000008             gbl_trisb                        trisb
+0000008C:00000008             gbl_pie1                         pie1
+0000008E:00000008             gbl_pcon                         pcon
+00000092:00000008             gbl_pr2                          pr2
+00000098:00000008             gbl_txsta                        txsta
+00000099:00000008             gbl_spbrg                        spbrg
+0000009A:00000008             gbl_eedata                       eedata
+0000009B:00000008             gbl_eeadr                        eeadr
+0000009C:00000008             gbl_eecon1                       eecon1
+0000009D:00000008             gbl_eecon2                       eecon2
+0000009F:00000008             gbl_vrcon                        vrcon
+
+
+Memory Usage Report
+===================
+RAM available:224 bytes, used:28 bytes (12.5%), free:196 bytes (87.5%), 
+Heap size:196 bytes, Heap max single alloc:94 bytes
+ROM available:1024 words, used:557 words (54.4%), free:467 words (45.6%)

@@ -1,0 +1,22 @@
+// SourceBoost Linker Function Resource Usage Dump
+
+#GLOBAL:"global",line = 0,ram = 24.0,rom = 0;
+doPower(void):"Z:\home\dan\PIC\TDA1514-TDA2040-Amp-Control\PIC-Control\TDAAmp.c",line = 229,ram = 0.0,rom = 30;
+applyInput(void):"Z:\home\dan\PIC\TDA1514-TDA2040-Amp-Control\PIC-Control\TDAAmp.c",line = 258,ram = 0.0,rom = 25;
+doMute(void):"Z:\home\dan\PIC\TDA1514-TDA2040-Amp-Control\PIC-Control\TDAAmp.c",line = 253,ram = 0.0,rom = 8;
+doInputDown(void):"Z:\home\dan\PIC\TDA1514-TDA2040-Amp-Control\PIC-Control\TDAAmp.c",line = 301,ram = 0.0,rom = 11;
+doInputUp(void):"Z:\home\dan\PIC\TDA1514-TDA2040-Amp-Control\PIC-Control\TDAAmp.c",line = 309,ram = 0.0,rom = 9;
+initialise(void):"Z:\home\dan\PIC\TDA1514-TDA2040-Amp-Control\PIC-Control\TDAAmp.c",line = 19,ram = 0.0,rom = 56;
+interrupt(void):"Z:\home\dan\PIC\TDA1514-TDA2040-Amp-Control\PIC-Control\TDAAmp.c",line = 100,ram = 2.0,rom = 192;
+doMotorDown(void):"Z:\home\dan\PIC\TDA1514-TDA2040-Amp-Control\PIC-Control\TDAAmp.c",line = 281,ram = 0.0,rom = 8;
+doMotorUp(void):"Z:\home\dan\PIC\TDA1514-TDA2040-Amp-Control\PIC-Control\TDAAmp.c",line = 289,ram = 0.0,rom = 8;
+rc5Process(void):"Z:\home\dan\PIC\TDA1514-TDA2040-Amp-Control\PIC-Control\TDAAmp.c",line = 319,ram = 0.0,rom = 53;
+checkPowerSw(void):"Z:\home\dan\PIC\TDA1514-TDA2040-Amp-Control\PIC-Control\TDAAmp.c",line = 361,ram = 0.0,rom = 10;
+checkEncoders(void):"Z:\home\dan\PIC\TDA1514-TDA2040-Amp-Control\PIC-Control\TDAAmp.c",line = 370,ram = 0.0,rom = 67;
+main(void):"Z:\home\dan\PIC\TDA1514-TDA2040-Amp-Control\PIC-Control\TDAAmp.c",line = 423,ram = 0.0,rom = 18;
+delay_ms(unsigned char):"NoSourceFile",line = 0,ram = 0.0,rom = 12;
+delay_s(unsigned char):"NoSourceFile",line = 0,ram = 1.0,rom = 15;
+_startup(void):"NoSourceFile",line = 0,ram = 0.0,rom = 19;
+#HEAP_BLOCK: 0, 160, 95;
+#HEAP_BLOCK: 1, 59, 53;
+#HEAP_BLOCK: 2, 288, 48;
